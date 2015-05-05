@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 
 """
-Author : pescimoro.mattia@gmail.com
+Author : Deekshith Allamaneni (dkhhyd+github@gmail.com)
+Forked from (Author): pescimoro.mattia@gmail.com
 Licence : GPL v3 or any later version
 
 This program is free software: you can redistribute it and/or modify
@@ -39,6 +40,7 @@ gracePeriod = 7
 def seek():                         # function to scan the network
     curHosts = []
     nm.scan(hosts = '192.168.0.0/24', arguments = '-n -sP -PE -T5')
+    #nm.scan(hosts = '10.14.11.1/200', arguments = '-n -sP -PE -T5')
     # executes a ping scan
 
     localtime = time.asctime(time.localtime(time.time()))
@@ -94,11 +96,16 @@ if __name__ == '__main__':
     startCounter = gracePeriod
     
     # are there any new hosts?
-    while (new_count <= old_count) or startCounter >= 0:
+    while True:
         startCounter -= 1
         time.sleep(1)               # increase to slow down the speed
         old_count = new_count
         new_count = seek()
+        if(new_count > old_count):
+            import os
+            os.system("espeak \"New device\"")
+        elif (new_count < old_count):
+            print "Some one left"
 
     # DANGER!!!
     print('OHSHITOHSHITOHSHITOHSHITOHSHIT!')
